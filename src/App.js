@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import Radium from 'radium';
 
 class App extends Component {
   state = {
@@ -45,16 +46,21 @@ class App extends Component {
 
   render() {
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
+      color: 'white',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
     };
 
     let persons = null;
 
-    if (this.state.showPersons){
+    if ( this.state.showPersons ){
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
@@ -67,17 +73,32 @@ class App extends Component {
           })}
         </div>
       );
+
+      style.backgroundColor = 'red';
+      style[':hover'] = {
+        backgroundColor: 'salmon',
+        color: 'black'
+      };
+    }
+
+    const classes = [];
+    if (this.state.persons.length <= 2){
+      classes.push('red');
+    }
+    if (this.state.persons.length <= 1){
+      classes.push('bold');
     }
 
     return (
       <div className="App">
         <h1>Hi, I'm a react app</h1>
-        <p>This is really working!</p>
-        <button style={style} onClick={this.togglePersonsHandler}>Switch Name</button>
+        <p class={classes.join(' ')}>This is really working!</p>
+        <button style={style} 
+        onClick={this.togglePersonsHandler}>Toggle Persons</button>
         {persons}
     </div>
     );
   }
 }
 
-export default App;
+export default Radium(App);
